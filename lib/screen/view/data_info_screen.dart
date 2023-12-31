@@ -21,6 +21,9 @@ class _DataInfoScreenState extends State<DataInfoScreen> {
 
   final TextEditingController txtDate=TextEditingController();
 
+  int currentPage = 1;
+  int itemsPerPage = 10;
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +33,12 @@ class _DataInfoScreenState extends State<DataInfoScreen> {
 
         ],
       ),
-      body:    StreamBuilder(stream: FireBaseHelper.base.readData(), builder: (context, snapshot) {
-
+      body: StreamBuilder(stream: FireBaseHelper.base.readData(), builder: (context, snapshot) {
           if(snapshot.hasError)
             {
+              print("${snapshot.error}");
               return Text("${snapshot.error}");
+
             }
           else if(snapshot.hasData)
             {
@@ -42,13 +46,15 @@ class _DataInfoScreenState extends State<DataInfoScreen> {
               List<QueryDocumentSnapshot> querySnapsList=querySnapshot.docs;
               List<HModel> l1=[];
 
+              print("fjdhfjdh}");
               for(var x in querySnapsList)
                 {
                   Map m1=x.data() as Map;
-                  String worker=m1['no_of_worker'];
+                  String? worker=m1['worker'];
 
                   HModel model=HModel(no_of_worker: worker);
                   l1.add(model);
+                  print(l1.length);
                 }
               return ListView.builder(itemBuilder: (context, index) {
                 return Column(
@@ -58,6 +64,7 @@ class _DataInfoScreenState extends State<DataInfoScreen> {
                           () =>  Column(
                         children: List.generate(controller.containerCount.value, (index) => InkWell(
                           onTap: () {
+                            print("${controller.containerCount.value}");
                             Get.toNamed("/ss");
                           },
                           child: Container(
@@ -72,7 +79,7 @@ class _DataInfoScreenState extends State<DataInfoScreen> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text("Name"),
+                                         Text("${index}"),
                                         Container(
                                           width: 150,
                                           decoration: BoxDecoration(color: Colors.white70,border: Border.all()),

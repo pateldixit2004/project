@@ -13,49 +13,69 @@ class GGScreen extends StatefulWidget {
 }
 
 class _GGScreenState extends State<GGScreen> {
-  HController controller=Get.put(HController());
+  HController controller = Get.put(HController());
 
-  final TextEditingController txtadd=TextEditingController();
+  final TextEditingController txtadd = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
-      body:Column(
-        children: [
-          IconButton(onPressed: () {
-            showDialog(context: context, builder: (context) {
-              return Dialog(child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 10,),
-                    TextField(
-                      controller: txtadd,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          focusedBorder: OutlineInputBorder(),
-                          labelText: 'No of Worker'
-                      ),
-                    ),
-                    const SizedBox(height: 10,),
-                    ElevatedButton(onPressed: () {
-                      controller.addContainers(int.parse(txtadd.text));
-                      HModel model=HModel(no_of_worker: txtadd.text);
-                      FireBaseHelper.base.insertData(model);
-                      Get.back();
-                    }, child: Text("Add"),),
-                  ],
-                ),
-              ),);
-            },);
-          }, icon: Icon(Icons.add)),
-
-          ElevatedButton(onPressed: () {
-            Get.toNamed('/data');
-          }, child: Text("Next"))
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextField(
+                                  controller: txtadd,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      focusedBorder: OutlineInputBorder(),
+                                      labelText: 'No of Worker'),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller
+                                        .addContainers(int.parse(txtadd.text));
+                                    HModel model =
+                                        HModel(no_of_worker: txtadd.text);
+                                    FireBaseHelper.base.workerData(model);
+                                    Get.back();
+                                  },
+                                  child: const Text("Add"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.add)),
+              ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed('/data');
+                  },
+                  child: const Text("Next"))
+            ],
+          ),
+        ),
       ),
-
-    ),);
+    );
   }
 }
